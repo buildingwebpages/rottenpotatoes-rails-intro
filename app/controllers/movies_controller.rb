@@ -12,29 +12,10 @@ class MoviesController < ApplicationController
   end
 
   def index
-    clear_session_first_run
     
-    @all_ratings = Movie.select(:rating).distinct.map(&:rating).sort
-    
-    if params[:ratings]
-      @ratings = params[:ratings].keys
-      session.delete(:ratings)
-      session[:ratings] = params[:ratings]
-    elsif session[:ratings]
-      @ratings = session[:ratings].keys
-    else
-      @ratings = @all_ratings
-    end
-    
-    if params[:order]
-      @movies = Movie.order(params[:order])
-      session.delete(:order)
-      session[:order] = params[:order]
-    elsif session[:order]
-      @movies = Movie.order(session[:order])
-    else
-      @movies = Movie.where({rating: @ratings})
-    end
+    set_ratings
+    set_movies
+    redirect_if_params_missing
     
   end
 
