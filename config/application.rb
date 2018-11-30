@@ -22,5 +22,8 @@ module Rottenpotatoes
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
+    
+    # 11/30/2018 run cucumber tests in test env. -Patrick
+    config.web_console.development_only = false
   end
 end
